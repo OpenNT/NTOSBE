@@ -1613,7 +1613,11 @@ WIN32_LIBS=$(LIBC_LIB) \
            $(LIBRARY_PATH)\advapi32.lib \
            $(LIBRARY_PATH)\kernel32.lib
 
+!if defined(USE_MINWIN)
+NTSS_LIBS=$(NT_LIBS) $(NT_CRT) $(MINWIN_LIB_PATH)\smdll.lib
+!else
 NTSS_LIBS=$(NT_LIBS) $(NT_CRT) $(BASE_LIB_PATH)\smdll.lib
+!endif
 
 OS2_LIBS=$(NT_LIBS)  $(SDK_LIB_PATH)\os2dll.lib
 
