@@ -61,6 +61,7 @@ ntsd.exe            dbg\files\bin
 pcopy.exe           bldtools
 rc.exe              bldtools
 rcdll.dll           bldtools
+reloc.exe           bldtools
 symbolcheck.dll     dbg\files\bin
 symchk.exe          dbg\files\bin
 touch.exe           bldtools

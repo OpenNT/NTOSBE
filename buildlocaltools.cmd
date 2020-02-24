@@ -126,6 +126,9 @@ if errorlevel 1 goto Error
 call :Build wcshdr sdktools\wcshdr idw\wcshdr.exe idw\wcshdr.exe
 if errorlevel 1 goto Error
 
+call :Build reloc sdktools\reloc bldtools\reloc.exe tools16\reloc.exe
+if errorlevel 1 goto Error
+
 REM //
 REM // Clean up temporary binary directory.
 REM //
