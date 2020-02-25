@@ -7,7 +7,7 @@ DIRS= mkmsg       \
       pcopy       \
       rcdll       \
       rc          \
-	  reloc       \
+      reloc       \
       mc          \
       touch       \
       m4          \
