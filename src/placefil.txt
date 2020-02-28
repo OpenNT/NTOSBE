@@ -62,6 +62,7 @@ pcopy.exe           bldtools
 rc.exe              bldtools
 rcdll.dll           bldtools
 reloc.exe           bldtools
+nosrvbld.exe        bldtools
 symbolcheck.dll     dbg\files\bin
 symchk.exe          dbg\files\bin
 touch.exe           bldtools

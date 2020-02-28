@@ -129,6 +129,9 @@ if errorlevel 1 goto Error
 call :Build reloc sdktools\reloc bldtools\reloc.exe tools16\reloc.exe
 if errorlevel 1 goto Error
 
+call :Build nosrvbld sdktools\nosrvbld bldtools\nosrvbld.exe tools16\nosrvbld.exe
+if errorlevel 1 goto Error
+
 REM //
 REM // Clean up temporary binary directory.
 REM //
