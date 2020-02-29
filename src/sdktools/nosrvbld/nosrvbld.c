@@ -43,7 +43,7 @@ int __cdecl main(int argc, char **argv)
 	for (i=0; skl_name[i]; i++)
 		if (skl_name[i]=='.') break;
 	skl_name[i]=0;
-	if (argv[2])
+	if (argc>2)
 		strcpy(msg_file, argv[2]);
 	else
 		strcpy(msg_file, "G:\\messages\\usa.msg");
@@ -59,12 +59,12 @@ int __cdecl main(int argc, char **argv)
 	}
 	if (!(fpMsg = fopen(msg_file, "r")))
 	{
-		printf ("\nCouldn't open %s . \n", skl_file);
+		printf ("\nCouldn't open %s . \n", msg_file);
 		return 1;
 	}
 	if (!(fpIdx = fopen(idx_file, "r")))
 	{
-		printf ("\nCouldn't open %s . \n", skl_file);
+		printf ("\nCouldn't open %s . \n", idx_file);
 		return 1;
 	}
 	printf (";  SKL, MSG and IDX files have been opened for reading.\n");
@@ -185,7 +185,7 @@ int __cdecl main(int argc, char **argv)
 	}
 
 	clearerr(fpSkl);
-	fclose(fpCl);
+	if (fpCl) fclose(fpCl);
 	fclose(fpMsg);
 	fclose(fpIdx);
 	fclose(fpSkl);
