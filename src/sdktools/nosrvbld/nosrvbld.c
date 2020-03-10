@@ -73,11 +73,12 @@ int __cdecl main(int argc, char **argv)
 	{
 		fgets(sklline, sizeof(sklline), fpSkl);
 		trimln(sklline);
-		sscanf(sklline, "%s %1s", rectype,  num);
 
-		if (!stricmp(rectype, ":end")) break;
 		if (sklline[0] == ':')
 		{
+			sscanf(sklline, "%s %1s", rectype,  num);
+
+			if (!stricmp(rectype, ":end")) break; else
 			if (!stricmp(rectype, ":class")) 
 			{
 				if (fpCl) fclose(fpCl);
