@@ -22,8 +22,8 @@ int __cdecl main(int argc, char **argv)
 {
 	char skl_file[FNMAX], skl_name[FNMAX], msg_file[FNMAX], idx_file[FNMAX], cl_file[FNMAX]; 
 	char skl_basen[8+3+1];
-	char sklline[LNMAX], idxline[LNMAX], msgline[LNMAX], clline[LNMAX];
-	char defline[LNMAX], msgstatus[LNMAX], idxcompnm[16], msgbuf[LNMAX];
+	char sklline[LNMAX], msgline[LNMAX], clline[LNMAX];
+	char msgstatus[LNMAX], idxcompnm[16];
 	char rectype[8], num[2], *p;
 	long idxlvl, msglvl, msgoffs;
 	int def_msgnr, msg_msgnr, i, use=0;
@@ -82,15 +82,11 @@ int __cdecl main(int argc, char **argv)
 			if (!stricmp(rectype, ":class")) 
 			{
 				if (fpCl) fclose(fpCl);
-				strcpy(cl_file, skl_file);
-				strcpy (cl_file+strlen(cl_file)-3, "cl");
-				strcat (cl_file, num);
+				sprintf(cl_file, "%.*scl%s", strlen(skl_file)-3, skl_file, num);
 				fgets(sklline, sizeof(sklline), fpSkl);
 				trimln(sklline);
-				fgets(idxline, sizeof(idxline), fpIdx);
-				sscanf(idxline, "%ld", &idxlvl);
-				fgets(msgline, sizeof(msgline), fpMsg);
-				sscanf(msgline, "%ld", &msglvl);
+				fscanf(fpIdx, "%ld", &idxlvl);
+				fscanf(fpMsg, "%ld", &msglvl);
 				if (idxlvl != msglvl)
 				{
 					printf("Header levels in message and Index files do not match.\n");
@@ -103,15 +99,14 @@ int __cdecl main(int argc, char **argv)
 					return 1;
 				}
 				printf (";  Writing to %s\n", cl_file);
-				fprintf (fpCl, "%c %s \n\n", ';', cl_file);
+				fprintf (fpCl, "; %s \n\n", cl_file);
 				continue;
 			} else 
 			if (!stricmp(rectype, ":def")) 
 			{
 				fputs("\n;_______________________\n\n", fpCl);
 				use = 1;
-				strcpy(defline, sklline+4);
-				sscanf(defline, "%d %s", &def_msgnr, msgstatus);
+				sscanf(sklline+4, "%d %s", &def_msgnr, msgstatus);
 				strcpy(skl_basen, skl_file);
 				if (p = strrchr(skl_basen, '\\'))
 					strcpy(skl_basen, ++p);
@@ -121,8 +116,7 @@ int __cdecl main(int argc, char **argv)
 			{
 				fputs("\n;_______________________\n\n", fpCl);
 				use = 1;
-				strcpy(defline, sklline+4);
-				sscanf(defline, "%d %s %s", &def_msgnr, skl_basen, msgstatus);
+				sscanf(sklline+4, "%d %s %s", &def_msgnr, skl_basen, msgstatus);
 			} else {
 				printf ("Error - unknown command: %s\n", rectype);
 				printf ("Output file incomplete!!\n");
@@ -130,13 +124,13 @@ int __cdecl main(int argc, char **argv)
 			}
 
 			rewind(fpIdx);
-			fgets(idxline, sizeof(idxline), fpIdx);
+			fscanf(fpIdx, "%*[^\n]");
 			while (!feof(fpIdx))
 			{
-				fgets(idxline, sizeof(idxline), fpIdx);
-				sscanf(idxline, "%s %lX", idxcompnm, &msgoffs);
+				fscanf(fpIdx, "%s %lX", idxcompnm, &msgoffs);
 				if (!stricmp(idxcompnm, skl_basen)) break;
 			}
+			rewind(fpIdx);
 			if (!stricmp(idxcompnm, skl_basen))
 				fseek(fpMsg, msgoffs, SEEK_SET);
 			else
@@ -152,10 +146,7 @@ int __cdecl main(int argc, char **argv)
 				if (def_msgnr == msg_msgnr)
 				{
 					use = 0;
-					strcpy(clline, msgstatus);
-					strcat(clline, " DB   ");
-					strncpy(&msgbuf[11], &msgline[11], LNMAX);
-					strcat(clline, &msgbuf[11]);
+					_snprintf(clline, sizeof(clline), "%s DB   %s", msgstatus, &msgline[11]);
 				}
 				else use=1;
 			}
@@ -170,11 +161,7 @@ int __cdecl main(int argc, char **argv)
 				fgets(clline, sizeof(clline), fpMsg);
 				while (!isdigit(clline[0]) && !isalpha(clline[0]) && !feof(fpMsg))
 				{
-					char buf[LNMAX];
-
-					strcpy(buf, "\tDB   ");
-					strcat(buf, clline);
-					fputs(buf, fpCl);
+					fprintf(fpCl, "\tDB   %s", clline);
 					fgets(clline, sizeof(clline), fpMsg);
 				}
 				rewind(fpMsg);
