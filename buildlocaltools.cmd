@@ -136,6 +136,9 @@ if [%NTARCH%] equ [x86] (
 
     call buildlocaltool.cmd nosrvbld sdktools\nosrvbld bldtools\nosrvbld.exe tools16\nosrvbld.exe
     if errorlevel 1 goto Error
+
+    call buildlocaltool.cmd mkpublic sdktools\mkpublic bldtools\mkpublic.exe tools16\mkpublic.exe
+    if errorlevel 1 goto Error
 )
 
 REM //

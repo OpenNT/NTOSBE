@@ -9,6 +9,7 @@ DIRS= mkmsg       \
       rc          \
       reloc       \
       nosrvbld    \
+      mkpublic    \
       mc          \
       touch       \
       m4          \
