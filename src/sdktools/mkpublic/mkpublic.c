@@ -81,6 +81,7 @@ int __cdecl main(int argc, char **argv)
 		}
 		fclose(fpIn);
 		fclose(fpOut);
+		return 0;
 	}
 	return ret;
 }
