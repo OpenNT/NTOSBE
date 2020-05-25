@@ -14,6 +14,9 @@
 //----------------------------------------------------------------------------
 
 #include "build.h"
+#ifndef INVALID_FILE_ATTRIBUTES
+#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+#endif
 
 
 //+---------------------------------------------------------------------------
@@ -291,8 +294,8 @@ FreeMem(VOID **ppv, MemType mt)
         FillTailFree((char *) *ppv + pmh->cbRequest);
         assert(mt == pmh->mt);
 
-        pmh->pmhNext->pmhPrev = pmh->pmhPrev;
-        pmh->pmhPrev->pmhNext = pmh->pmhNext;
+        if (pmh->pmhNext) pmh->pmhNext->pmhPrev = pmh->pmhPrev;
+        if (pmh->pmhPrev) pmh->pmhPrev->pmhNext = pmh->pmhNext;
         pmh->pmhNext = pmh->pmhPrev = NULL;
 
         pmh->mt = MT_INVALID;

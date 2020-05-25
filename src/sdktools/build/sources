@@ -30,6 +30,7 @@ TARGETPATH=obj
 TARGETTYPE=PROGRAM
 
 USE_LIBCMT=1
+NO_SAFESEH=1
 
 SOURCES=build.rc    \
         build.c     \
